@@ -17,7 +17,25 @@
     "commands": [{
       "command": "template-eva.insertAvatar",
       "title": "%cmd.insertAvatar.title%"
-    }]
+    }],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "template-eva.insertAvatar",
+          "group": "9_cutcopypaste "
+        }
+      ]
+    }
+  },
+  "configuration": {
+    "type": "object",
+    "title": "%ext.config.title%",
+    "properties": {
+      "template-eva.avatar": {
+        "default": "http://tva1.sinaimg.cn/large/b3cc33a0gy1gxra4tr2mrj208t08tjrq.jpg",
+        "description": "%ext.config.avatar%"
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",

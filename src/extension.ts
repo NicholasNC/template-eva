@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-26 14:11:31
- * @LastEditTime: 2021-12-26 14:53:53
+ * @LastEditTime: 2021-12-26 14:59:06
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /template-eva/src/extension.ts
@@ -21,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
   const avatar = new AvatarGenerator();
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("extension.insertAvatar", () => {
+    vscode.commands.registerCommand('template-eva.insertAvatar', () => {
       avatar.execute();
     })
   );
