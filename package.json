@@ -14,10 +14,12 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [{
-      "command": "template-eva.insertAvatar",
-      "title": "%cmd.insertAvatar.title%"
-    }],
+    "commands": [
+      {
+        "command": "template-eva.insertAvatar",
+        "title": "%cmd.insertAvatar.title%"
+      }
+    ],
     "menus": {
       "editor/context": [
         {
@@ -25,15 +27,15 @@
           "group": "9_cutcopypaste "
         }
       ]
-    }
-  },
-  "configuration": {
-    "type": "object",
-    "title": "%ext.config.title%",
-    "properties": {
-      "template-eva.avatar": {
-        "default": "http://tva1.sinaimg.cn/large/b3cc33a0gy1gxra4tr2mrj208t08tjrq.jpg",
-        "description": "%ext.config.avatar%"
+    },
+    "configuration": {
+      "type": "object",
+      "title": "%ext.config.title%",
+      "properties": {
+        "template-eva.avatar": {
+          "default": "http://tva1.sinaimg.cn/large/b3cc33a0gy1gxra4tr2mrj208t08tjrq.jpg",
+          "description": "%ext.config.avatar%"
+        }
       }
     }
   },
@@ -49,19 +51,22 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.63.0",
     "@types/glob": "^7.1.4",
     "@types/mocha": "^9.0.0",
     "@types/node": "14.x",
+    "@types/vscode": "^1.63.0",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
+    "@vscode/test-electron": "^1.6.2",
     "eslint": "^8.1.0",
     "glob": "^7.1.7",
     "mocha": "^9.1.3",
-    "typescript": "^4.4.4",
     "ts-loader": "^9.2.5",
+    "typescript": "^4.4.4",
     "webpack": "^5.52.1",
-    "webpack-cli": "^4.8.0",
-    "@vscode/test-electron": "^1.6.2"
+    "webpack-cli": "^4.8.0"
+  },
+  "dependencies": {
+    "vscode-nls": "^5.0.0"
   }
 }
