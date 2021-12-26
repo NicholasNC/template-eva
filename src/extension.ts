@@ -1,26 +1,33 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+/*
+ * @Author: your name
+ * @Date: 2021-12-26 14:11:31
+ * @LastEditTime: 2021-12-26 14:53:53
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: /template-eva/src/extension.ts
+ */
 import * as vscode from 'vscode';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+import AvatarGenerator from './insert/AvatarGenerator';
+
+
+
+
+/**
+ * 一旦你的插件激活，vscode会立刻调用下述方法
+ *    只会在你的插件激活时执行一次
+ */
 export function activate(context: vscode.ExtensionContext) {
-	
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "template-eva" is now active!');
+  const avatar = new AvatarGenerator();
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('template-eva.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from template-eva!');
-	});
-
-	context.subscriptions.push(disposable);
+  context.subscriptions.push(
+    vscode.commands.registerCommand("extension.insertAvatar", () => {
+      avatar.execute();
+    })
+  );
 }
 
-// this method is called when your extension is deactivated
+/**
+ * 插件关闭时调用下述方法
+ */
 export function deactivate() {}
