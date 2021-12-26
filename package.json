@@ -18,12 +18,20 @@
       {
         "command": "template-eva.insertAvatar",
         "title": "%cmd.insertAvatar.title%"
+      },
+      {
+        "command": "template-eva.insertImage",
+        "title": "%cmd.insertImage.title%"
       }
     ],
     "menus": {
       "editor/context": [
         {
           "command": "template-eva.insertAvatar",
+          "group": "9_cutcopypaste "
+        },
+        {
+          "command": "template-eva.insertImage",
           "group": "9_cutcopypaste "
         }
       ]
@@ -35,6 +43,10 @@
         "template-eva.avatar": {
           "default": "http://tva1.sinaimg.cn/large/b3cc33a0gy1gxra4tr2mrj208t08tjrq.jpg",
           "description": "%ext.config.avatar%"
+        },
+        "template-eva.image": {
+          "default": "http://tva1.sinaimg.cn/large/b3cc33a0gy1gxrdz7rk28j20go0b43zr.jpg",
+          "description": "%ext.config.image%"
         }
       }
     }
