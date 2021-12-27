@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-26 14:18:29
- * @LastEditTime: 2021-12-26 17:06:39
+ * @LastEditTime: 2021-12-27 21:51:53
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /template-eva/src/insert/TextGenerator.ts
@@ -15,9 +15,9 @@ export default abstract class TextGenerator {
     this.isNeedPrompt = isNeedPrompt;
   }
 
-  protected prompt(): Promise<any> {
-    return;
-  }
+  // protected prompt(): Promise<any> {
+  //   return;
+  // }
 
   protected abstract generate(args: any): string | undefined;
   
