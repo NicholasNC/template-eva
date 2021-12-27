@@ -30,13 +30,13 @@ export default abstract class TextGenerator {
 
     let args = null;
 
-    if (this.isNeedPrompt) {
-      args = await this.prompt();
+    // if (this.isNeedPrompt) {
+    //   args = await this.prompt();
 
-      if (args === undefined) {
-        return;
-      }
-    }
+    //   if (args === undefined) {
+    //     return;
+    //   }
+    // }
 
     const text = this.generate(args);
 
