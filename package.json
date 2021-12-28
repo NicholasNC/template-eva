@@ -13,6 +13,7 @@
     "onCommand:template-eva.insertAvatar"
   ],
   "main": "./dist/extension.js",
+  "publisher": "yutucc",
   "contributes": {
     "commands": [
       {
