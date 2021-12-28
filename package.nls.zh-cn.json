@@ -1,0 +1,8 @@
+{
+  "ext.config.title": "模板助手配置",
+  "ext.config.avatar": "头像 url",
+  "ext.config.image": "图片 url",
+
+  "cmd.insertAvatar.title": "插入头像",
+  "cmd.insertImage.title": "插入图片"
+}

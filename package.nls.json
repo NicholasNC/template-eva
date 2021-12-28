@@ -1,0 +1,8 @@
+{
+  "ext.config.title": "template eva configuration",
+  "ext.config.avatar": "Avatar Url",
+  "ext.config.image": "Image Url",
+
+  "cmd.insertAvatar.title": "Insert Avatar",
+  "cmd.insertImage.title": "Insert Image"
+}
