@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-26 14:11:31
- * @LastEditTime: 2021-12-29 22:33:01
+ * @LastEditTime: 2021-12-29 22:36:06
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /template-eva/src/extension.ts
@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('template-eva.insertImage', () => {
+    vscode.commands.registerCommand('template-eva.insertLorem', () => {
       lorem.execute();
     })
   );
