@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-26 14:11:31
- * @LastEditTime: 2021-12-26 20:36:23
+ * @LastEditTime: 2021-12-29 22:36:06
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /template-eva/src/extension.ts
@@ -9,8 +9,7 @@
 import * as vscode from 'vscode';
 
 import ImgGenerator from './insert/ImgGenerator';
-
-
+import LoremGenerator from './insert/LoremGenerator';
 
 
 /**
@@ -20,6 +19,7 @@ import ImgGenerator from './insert/ImgGenerator';
 export function activate(context: vscode.ExtensionContext) {
   const avatar = new ImgGenerator('avatar');
   const image = new ImgGenerator('image');
+  const lorem = new LoremGenerator();
 
   context.subscriptions.push(
     vscode.commands.registerCommand('template-eva.insertAvatar', () => {
@@ -30,6 +30,12 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('template-eva.insertImage', () => {
       image.execute();
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('template-eva.insertLorem', () => {
+      lorem.execute();
     })
   );
 }
