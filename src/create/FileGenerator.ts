@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-01 14:44:33
- * @LastEditTime: 2022-01-02 10:51:20
+ * @LastEditTime: 2022-01-02 13:29:39
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /template-eva/src/create/FileGenerator.ts
@@ -13,6 +13,9 @@ import {
   QuickPickItem,
   Uri,
 } from 'vscode';
+import * as fs from 'fs';
+import * as fse from 'fs-extra';
+import * as path from 'path';
 
 
 
@@ -27,11 +30,26 @@ export default class FileGenerator {
   async execute(uri: Uri) {
     console.log('uri :>> ', uri);
 
+    const dir = uri.fsPath;
     const template = await this.selectTemplatePrompt();
     const name = await this.inputNamePrompt();
 
     console.log('template :>> ', template);
     console.log('name :>> ', name);
+
+    const {
+      detail: filePath,
+    } = template;
+
+    const apDirname = path.join(dir, filePath);
+    const rpPirname = path.join(dir, `.vscode/.template-eva/${filePath}`);
+
+    const isExistsApDirname = fs.existsSync(apDirname);
+    const isExistsRpPirname = fs.existsSync(rpPirname);
+
+    if (!isExistsApDirname || !isExistsRpPirname) {
+      throw new Error('模板不存在');
+    }
 
     return;
   }
