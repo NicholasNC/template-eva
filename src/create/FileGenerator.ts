@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2022-01-01 14:44:33
- * @LastEditTime: 2022-01-02 13:29:39
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-26 16:49:11
+ * @LastEditors: wuqinfa
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /template-eva/src/create/FileGenerator.ts
  */
@@ -30,7 +30,7 @@ export default class FileGenerator {
   async execute(uri: Uri) {
     console.log('uri :>> ', uri);
 
-    const dir = uri.fsPath;
+    const targetDir = uri.fsPath;
     const template = await this.selectTemplatePrompt();
     const name = await this.inputNamePrompt();
 
@@ -38,20 +38,78 @@ export default class FileGenerator {
     console.log('name :>> ', name);
 
     const {
-      detail: filePath,
+      detail: templateName,
     } = template;
 
-    const apDirname = path.join(dir, filePath);
-    const rpPirname = path.join(dir, `.vscode/.template-eva/${filePath}`);
+    // const apDirname = path.join(targetDir, templateName);
+    // const rpPirname = path.join(targetDir, `.vscode/.template-eva/${templateName}`);
 
-    const isExistsApDirname = fs.existsSync(apDirname);
-    const isExistsRpPirname = fs.existsSync(rpPirname);
+    // const isExistsApDirname = fs.existsSync(apDirname);
+    // const isExistsRpPirname = fs.existsSync(rpPirname);
 
-    if (!isExistsApDirname || !isExistsRpPirname) {
-      throw new Error('模板不存在');
+    // if (!isExistsApDirname || !isExistsRpPirname) {
+    //   throw new Error('模板不存在');
+    // }
+
+    const templatePath = this.getTemplatePath(targetDir, templateName);
+
+    if (!templatePath) {
+      return;
     }
 
+    const targetPath = path.join(targetDir, name);
+
+    fse.copy(templatePath, targetPath, {
+      overwrite: false,
+      errorOnExist: true,
+    })
+    .then(() => {
+      console.log('success!');
+    })
+    .catch(err => {
+      console.error(err);
+    });
+
+
+
     return;
+  }
+
+  /**
+   * 获取模板文件的路径
+   */
+  private getTemplatePath(targetDir: string, templateName: string): string {
+    let result = '';
+
+    const workspaceFolders = workspace.workspaceFolders || [];
+
+    for (const item of workspaceFolders) {
+      const {
+        path: rootDir, // 工作空间的根目录路径
+      } = item.uri || {};
+      const tempRootDir = path.join(`${rootDir}/`);
+      const tempTargetDir = path.join(`${targetDir}/`);
+
+      /*
+        如果目标路径不包含工作空间的根目录路径，说明不在该工作空间中插入，直接跳到下一个循环
+        ps: 之所以要  path.join(`${rootDir}/`) ，加上 / 是为了避免两个工作空间的内容有包含的情况，比如：
+          "/Users/nicholas/Desktop/test"
+          "/Users/nicholas/Desktop/test-imgs"
+       */
+      if (!tempTargetDir.includes(tempRootDir)) {
+        continue;
+      }
+
+      const templatePath = path.join(rootDir, `.vscode/.template-eva/${templateName}`);
+      const isExists = fs.existsSync(templatePath);
+
+      if (isExists) {
+        result = templatePath;
+        break;
+      }
+    }
+
+    return result;
   }
 
   protected async selectTemplatePrompt(): Promise<QuickPickItem | undefined> {
