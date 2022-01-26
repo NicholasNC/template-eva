@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-01 14:44:33
- * @LastEditTime: 2022-01-26 23:32:39
+ * @LastEditTime: 2022-01-26 23:35:59
  * @LastEditors: wuqinfa
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /template-eva/src/create/FileGenerator.ts
@@ -60,6 +60,12 @@ export default class FileGenerator {
     return;
   }
 
+  /**
+   * 插入内置模板
+   * @param targetDir 目标路径
+   * @param templateName 模板文件的文件名
+   * @param newFileName 新文件的文件名
+   */
   private insertEmbedTemplate(targetDir: string, templateName: string, newFileName: string) {
     switch (templateName) {
       case EMBED_TEMPLATE_WXAPPPAGE:
@@ -71,6 +77,11 @@ export default class FileGenerator {
     }
   }
 
+  /**
+   * 插入内置模板 - 微信小程序页面
+   * @param targetDir 目标路径
+   * @param newFileName 新文件的文件名
+   */
   private insertEmbedWxappPage(targetDir: string, newFileName: string) {
     const targetPath = path.join(targetDir, newFileName);
     const isTargetExists = fse.pathExistsSync(targetPath);
