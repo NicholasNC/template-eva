@@ -81,6 +81,10 @@
             {
               "fileName": "wxappPage",
               "description": "微信模板页面"
+            },
+            {
+              "fileName": "ttTS.ts",
+              "description": "测试一个文件"
             }
           ]
         }

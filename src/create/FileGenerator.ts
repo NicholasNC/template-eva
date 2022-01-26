@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-01 14:44:33
- * @LastEditTime: 2022-01-26 16:49:11
+ * @LastEditTime: 2022-01-26 17:40:54
  * @LastEditors: wuqinfa
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /template-eva/src/create/FileGenerator.ts
@@ -41,23 +41,17 @@ export default class FileGenerator {
       detail: templateName,
     } = template;
 
-    // const apDirname = path.join(targetDir, templateName);
-    // const rpPirname = path.join(targetDir, `.vscode/.template-eva/${templateName}`);
+    const templateObj = this.getTemplate(targetDir, templateName);
 
-    // const isExistsApDirname = fs.existsSync(apDirname);
-    // const isExistsRpPirname = fs.existsSync(rpPirname);
-
-    // if (!isExistsApDirname || !isExistsRpPirname) {
-    //   throw new Error('模板不存在');
-    // }
-
-    const templatePath = this.getTemplatePath(targetDir, templateName);
-
-    if (!templatePath) {
+    if (!templateObj) {
       return;
     }
 
-    const targetPath = path.join(targetDir, name);
+    const {
+      path: templatePath,
+      ext: templateExt,
+    } = templateObj;
+    const targetPath = path.join(targetDir, templateExt ? `${name}${templateExt}` : name);
 
     fse.copy(templatePath, targetPath, {
       overwrite: false,
@@ -67,10 +61,8 @@ export default class FileGenerator {
       console.log('success!');
     })
     .catch(err => {
-      console.error(err);
+      window.showErrorMessage('目前路径上已存在该文件');
     });
-
-
 
     return;
   }
@@ -78,8 +70,8 @@ export default class FileGenerator {
   /**
    * 获取模板文件的路径
    */
-  private getTemplatePath(targetDir: string, templateName: string): string {
-    let result = '';
+  private getTemplate(targetDir: string, templateName: string) {
+    let result = null;
 
     const workspaceFolders = workspace.workspaceFolders || [];
 
@@ -101,11 +93,19 @@ export default class FileGenerator {
       }
 
       const templatePath = path.join(rootDir, `.vscode/.template-eva/${templateName}`);
-      const isExists = fs.existsSync(templatePath);
+      const ext = path.extname(templatePath);
 
-      if (isExists) {
-        result = templatePath;
-        break;
+
+      try {
+        const stat = fs.lstatSync(templatePath);
+        const isFile = stat.isFile();
+
+        result = {
+          path: templatePath,
+          ext: isFile ? ext : '',
+        };
+      } catch (error) {
+        // 执行 lstatSync 报错，说明模板路径不存在
       }
     }
 
