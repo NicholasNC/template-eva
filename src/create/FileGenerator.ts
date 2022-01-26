@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-01 14:44:33
- * @LastEditTime: 2022-01-26 19:50:47
+ * @LastEditTime: 2022-01-26 20:06:00
  * @LastEditors: wuqinfa
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /template-eva/src/create/FileGenerator.ts
@@ -24,17 +24,24 @@ export interface FileTemplate {
   description: string;
 }
 
-
+interface TemplateObj {
+  path: string; // 模板的路径
+  ext: string; // 如果模板是文件，就有后缀名，如果是文件夹，就没有后缀
+}
 
 export default class FileGenerator {
   async execute(uri: Uri) {
     const targetDir = uri.fsPath;
-    const template = await this.selectTemplatePrompt();
+    const template: QuickPickItem | undefined = await this.selectTemplatePrompt();
     const newFileName = await this.inputNamePrompt();
 
     const {
-      detail: templateName,
-    } = template;
+      detail: templateName = '',
+    } = template || {};
+
+    if (!template || !templateName) {
+      return;
+    }
 
     const templateObj = this.getTemplate(targetDir, templateName);
 
@@ -45,13 +52,12 @@ export default class FileGenerator {
 
   /**
    * 将模板复制到目标路径上
-   * @param templateObj 
-   * @param targetDir 
-   * @param newFileName 
-   * @returns 
+   * @param templateObj getTemplate 函数返回值
+   * @param targetDir 目标路径
+   * @param newFileName 新文件的文件名
    */
-  private copyTemplate(templateObj, targetDir, newFileName) {
-    if (!templateObj) {
+  private copyTemplate(templateObj: TemplateObj | null, targetDir: string, newFileName: string | undefined) {
+    if (!templateObj || !newFileName) {
       return;
     }
 
@@ -75,8 +81,11 @@ export default class FileGenerator {
 
   /**
    * 获取模板文件的路径
+   * @param targetDir 目标路径
+   * @param templateName 模板文件的文件名
+   * @returns TemplateObj | null
    */
-  private getTemplate(targetDir: string, templateName: string) {
+  private getTemplate(targetDir: string, templateName: string): TemplateObj | null {
     let result = null;
 
     const workspaceFolders = workspace.workspaceFolders || [];
@@ -150,9 +159,6 @@ export default class FileGenerator {
         if (!name) {
           return '请输入名字';
         }
-        // if (/[\\/:*?"<>|]/.test(name)) {
-        //   return "Invalid Component name";
-        // }
         if (/[\s]/.test(name)) {
           return '不能输入空格';
         }
