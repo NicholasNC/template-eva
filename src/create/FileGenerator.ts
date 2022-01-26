@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-01 14:44:33
- * @LastEditTime: 2022-01-26 19:41:21
+ * @LastEditTime: 2022-01-26 19:50:47
  * @LastEditors: wuqinfa
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /template-eva/src/create/FileGenerator.ts
@@ -28,14 +28,9 @@ export interface FileTemplate {
 
 export default class FileGenerator {
   async execute(uri: Uri) {
-    console.log('uri :>> ', uri);
-
     const targetDir = uri.fsPath;
     const template = await this.selectTemplatePrompt();
-    const name = await this.inputNamePrompt();
-
-    console.log('template :>> ', template);
-    console.log('name :>> ', name);
+    const newFileName = await this.inputNamePrompt();
 
     const {
       detail: templateName,
@@ -43,6 +38,19 @@ export default class FileGenerator {
 
     const templateObj = this.getTemplate(targetDir, templateName);
 
+    this.copyTemplate(templateObj, targetDir, newFileName);
+
+    return;
+  }
+
+  /**
+   * 将模板复制到目标路径上
+   * @param templateObj 
+   * @param targetDir 
+   * @param newFileName 
+   * @returns 
+   */
+  private copyTemplate(templateObj, targetDir, newFileName) {
     if (!templateObj) {
       return;
     }
@@ -51,7 +59,7 @@ export default class FileGenerator {
       path: templatePath,
       ext: templateExt,
     } = templateObj;
-    const targetPath = path.join(targetDir, templateExt ? `${name}${templateExt}` : name);
+    const targetPath = path.join(targetDir, templateExt ? `${newFileName}${templateExt}` : newFileName);
 
     fse.copy(templatePath, targetPath, {
       overwrite: false,
@@ -60,11 +68,9 @@ export default class FileGenerator {
     .then(() => {
       window.showInformationMessage('创建成功');
     })
-    .catch(err => {
+    .catch(() => {
       window.showErrorMessage('目前路径上已存在该文件');
     });
-
-    return;
   }
 
   /**
