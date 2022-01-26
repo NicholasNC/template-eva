@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-01 14:44:33
- * @LastEditTime: 2022-01-26 20:06:00
+ * @LastEditTime: 2022-01-26 20:08:38
  * @LastEditors: wuqinfa
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /template-eva/src/create/FileGenerator.ts
@@ -16,7 +16,6 @@ import {
 import * as fs from 'fs';
 import * as fse from 'fs-extra';
 import * as path from 'path';
-
 
 
 export interface FileTemplate {
