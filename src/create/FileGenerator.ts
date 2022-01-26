@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-01 14:44:33
- * @LastEditTime: 2022-01-26 17:40:54
+ * @LastEditTime: 2022-01-26 19:41:21
  * @LastEditors: wuqinfa
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /template-eva/src/create/FileGenerator.ts
@@ -58,7 +58,7 @@ export default class FileGenerator {
       errorOnExist: true,
     })
     .then(() => {
-      console.log('success!');
+      window.showInformationMessage('创建成功');
     })
     .catch(err => {
       window.showErrorMessage('目前路径上已存在该文件');
@@ -95,7 +95,6 @@ export default class FileGenerator {
       const templatePath = path.join(rootDir, `.vscode/.template-eva/${templateName}`);
       const ext = path.extname(templatePath);
 
-
       try {
         const stat = fs.lstatSync(templatePath);
         const isFile = stat.isFile();
@@ -106,6 +105,7 @@ export default class FileGenerator {
         };
       } catch (error) {
         // 执行 lstatSync 报错，说明模板路径不存在
+        window.showErrorMessage('模板不存在');
       }
     }
 
@@ -126,14 +126,11 @@ export default class FileGenerator {
       detail: item.fileName,
     }));
 
-    console.log('fileTemplates :>> ', fileTemplates);
-
     return window.showQuickPick(picks, {
       ignoreFocusOut: true,
       placeHolder: '请选择模板',
       title: '这个是什么？',
       onDidSelectItem(item: QuickPickItem): QuickPickItem {
-        console.log('item :>> ', item);
         return item;
       },
     });
