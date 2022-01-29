@@ -33,6 +33,10 @@
       {
         "command": "template-eva.createFile",
         "title": "通过模板生成文件"
+      },
+      {
+        "command": "template-eva.insertLogStatement",
+        "title": "插入 log"
       }
     ],
     "menus": {
@@ -58,6 +62,14 @@
         }
       ]
     },
+    "keybindings": [
+      {
+          "command": "template-eva.insertLogStatement",
+          "key": "shift+ctrl+l",
+          "mac": "shift+cmd+l",
+          "when": "editorTextFocus"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "%ext.config.title%",
