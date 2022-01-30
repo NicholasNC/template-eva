@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-01-29 10:17:18
- * @LastEditTime: 2022-01-30 11:54:28
+ * @LastEditTime: 2022-01-30 21:48:17
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -12,6 +12,9 @@ import {
   
   Uri,
   TextEditor,
+  Selection,
+  Range,
+  Position,
 } from 'vscode';
 import lodash from 'lodash';
 
@@ -24,19 +27,41 @@ export default class ConsoleGenerator {
         return;
     }
 
-    const selections = editor.selections;
-
-    console.log('selections :>> ', selections);
+    
 
     try {
       await commands.executeCommand('editor.action.addSelectionToNextFindMatch');
 
       const allSelText: string[] = this.getAllSelText(editor);
       const endOfBlock = this.getEndOfBlock(editor);
-      
+      const newSelections = endOfBlock.map((item) => {
+        return new Selection(item, 0, item, 0);
+      });
 
-      console.log('allSelText :>> ', allSelText);
-      console.log('endOfBlock :>> ', endOfBlock);
+      const selections = editor.selections;
+
+    console.log('selections :>> ', selections);
+
+      // editor.selections = newSelections;
+
+      // await commands.executeCommand('editor.action.insertLineAfter');
+
+      // const positionList = [];
+
+      // editor.selections.forEach((range) => {
+      //   positionList.push(new Position(range.start.line, range.end.character));
+      // });
+
+      // editor.edit((editBuilder) => {
+      //   positionList.forEach((position, index) => {
+      //       editBuilder.insert(position, '\nconsole.log(111)\nconsole.log(222)\n');
+      //   });
+      // });
+
+      // console.log('allSelText :>> ', allSelText);
+      // console.log('endOfBlock :>> ', endOfBlock);
+      // console.log('positionList :>> ', positionList);
+      // console.log('www :>> ', www);
     } catch (error) {
       
     }
