@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-01-29 10:17:18
- * @LastEditTime: 2022-01-30 21:48:17
+ * @LastEditTime: 2022-01-30 22:52:15
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -32,15 +32,48 @@ export default class ConsoleGenerator {
     try {
       await commands.executeCommand('editor.action.addSelectionToNextFindMatch');
 
-      const allSelText: string[] = this.getAllSelText(editor);
+      console.log('object :>> ', 111);
+
+      // const allSelText: string[] = this.getAllSelText(editor);
       const endOfBlock = this.getEndOfBlock(editor);
       const newSelections = endOfBlock.map((item) => {
-        return new Selection(item, 0, item, 0);
+        const {
+          line,
+        } = item;
+        return new Selection(line, 0, line, 0);
       });
 
-      const selections = editor.selections;
+      editor.selections = newSelections;
 
-    console.log('selections :>> ', selections);
+      await commands.executeCommand('editor.action.insertLineAfter');
+
+      const positions: any[] = [];
+
+      editor.selections.forEach((item) => {
+        positions.push(new Position(item.start.line, item.end.character));
+      });
+
+      editor.edit((editBuilder) => {
+        positions.forEach((position, index) => {
+          const texts = endOfBlock[index].texts;
+          const length = texts.length;
+
+          let txt = '';
+
+          texts.forEach((item, subIndex) => {
+            if (subIndex !== (length - 1)) {
+              txt += `console.log('${item} :>> ', ${item});\n`;
+              return;
+            }
+
+            txt += `console.log('${item} :>> ', ${item});`;
+          });
+
+          editBuilder.insert(position, txt);
+        });
+      });
+
+
 
       // editor.selections = newSelections;
 
@@ -77,33 +110,77 @@ export default class ConsoleGenerator {
     return result;
   }
 
-  private getEndOfBlock(editor: TextEditor): number[] {
-    const result: number[] = [];
+  // {
+  //   line: 1,
+  //   texts: []
+  // }
 
-    const tempLines = editor.selections.map((item) => {
-      return item.start.line;
-    });
-    const allSelLines: number[] = lodash.orderBy(lodash.uniq(tempLines));
-    const length = allSelLines.length;
+  private getEndOfBlock(editor: TextEditor): any[] {
+    const result: any[] = [];
+
+    const selections = editor.selections;
+    const ascSelections = lodash.orderBy(selections, 'start.line');
+    const length = ascSelections.length;
 
     let tempLine: null | number = null;
+    let tempText: any[] = [];
 
-    allSelLines.forEach((line: number, index: number) => {
+    ascSelections.forEach((item, index) => {
+      const line = item.start.line;
+      const text = editor.document.getText(item);
+
       if (tempLine === null) {
+        tempText.push(text);
         tempLine = line;
         return;
       }
 
       if (line !== (tempLine + 1)) {
-        result.push(tempLine);
+        result.push({
+          line: tempLine,
+          texts: tempText,
+        });
+
+        tempText = [];
       }
 
+      tempText.push(text);
       tempLine = line;
 
       if (index === (length - 1)) {
-        result.push(line);
+        result.push({
+          line: line,
+          texts: tempText,
+        });
       }
     });
+
+
+
+    // const tempLines = editor.selections.map((item) => {
+    //   return item.start.line;
+    // });
+    // const allSelLines: number[] = lodash.orderBy(lodash.uniq(tempLines));
+    // const length = allSelLines.length;
+
+    // let tempLine: null | number = null;
+
+    // allSelLines.forEach((line: number, index: number) => {
+    //   if (tempLine === null) {
+    //     tempLine = line;
+    //     return;
+    //   }
+
+    //   if (line !== (tempLine + 1)) {
+    //     result.push(tempLine);
+    //   }
+
+    //   tempLine = line;
+
+    //   if (index === (length - 1)) {
+    //     result.push(line);
+    //   }
+    // });
 
     return result;
   }
