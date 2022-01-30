@@ -64,10 +64,10 @@
     },
     "keybindings": [
       {
-          "command": "template-eva.insertLogStatement",
-          "key": "shift+ctrl+l",
-          "mac": "shift+cmd+l",
-          "when": "editorTextFocus"
+        "command": "template-eva.insertLogStatement",
+        "key": "shift+ctrl+l",
+        "mac": "shift+cmd+l",
+        "when": "editorTextFocus"
       }
     ],
     "configuration": {
@@ -140,6 +140,7 @@
   },
   "dependencies": {
     "fs-extra": "^10.0.0",
+    "lodash": "^4.17.21",
     "vscode-nls": "^5.0.0"
   }
 }
