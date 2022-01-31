@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-01-29 10:17:18
- * @LastEditTime: 2022-01-30 22:52:15
+ * @LastEditTime: 2022-01-31 10:27:16
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -27,15 +27,10 @@ export default class ConsoleGenerator {
         return;
     }
 
-    
-
     try {
       await commands.executeCommand('editor.action.addSelectionToNextFindMatch');
 
-      console.log('object :>> ', 111);
-
-      // const allSelText: string[] = this.getAllSelText(editor);
-      const endOfBlock = this.getEndOfBlock(editor);
+      const endOfBlock = this.getEndLineAndText(editor);
       const newSelections = endOfBlock.map((item) => {
         const {
           line,
@@ -73,41 +68,9 @@ export default class ConsoleGenerator {
         });
       });
 
-
-
-      // editor.selections = newSelections;
-
-      // await commands.executeCommand('editor.action.insertLineAfter');
-
-      // const positionList = [];
-
-      // editor.selections.forEach((range) => {
-      //   positionList.push(new Position(range.start.line, range.end.character));
-      // });
-
-      // editor.edit((editBuilder) => {
-      //   positionList.forEach((position, index) => {
-      //       editBuilder.insert(position, '\nconsole.log(111)\nconsole.log(222)\n');
-      //   });
-      // });
-
-      // console.log('allSelText :>> ', allSelText);
-      // console.log('endOfBlock :>> ', endOfBlock);
-      // console.log('positionList :>> ', positionList);
-      // console.log('www :>> ', www);
     } catch (error) {
       
     }
-  }
-
-  private getAllSelText(editor: TextEditor): string[] {
-    const result: string[] = [];
-
-    editor.selections.forEach((item) => {
-      result.push(editor.document.getText(item));
-    });
-
-    return result;
   }
 
   // {
@@ -115,7 +78,7 @@ export default class ConsoleGenerator {
   //   texts: []
   // }
 
-  private getEndOfBlock(editor: TextEditor): any[] {
+  private getEndLineAndText(editor: TextEditor): any[] {
     const result: any[] = [];
 
     const selections = editor.selections;
@@ -154,33 +117,6 @@ export default class ConsoleGenerator {
         });
       }
     });
-
-
-
-    // const tempLines = editor.selections.map((item) => {
-    //   return item.start.line;
-    // });
-    // const allSelLines: number[] = lodash.orderBy(lodash.uniq(tempLines));
-    // const length = allSelLines.length;
-
-    // let tempLine: null | number = null;
-
-    // allSelLines.forEach((line: number, index: number) => {
-    //   if (tempLine === null) {
-    //     tempLine = line;
-    //     return;
-    //   }
-
-    //   if (line !== (tempLine + 1)) {
-    //     result.push(tempLine);
-    //   }
-
-    //   tempLine = line;
-
-    //   if (index === (length - 1)) {
-    //     result.push(line);
-    //   }
-    // });
 
     return result;
   }
