@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-01-29 10:17:18
- * @LastEditTime: 2022-01-31 10:35:42
+ * @LastEditTime: 2022-01-31 11:05:48
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -52,7 +52,7 @@ export default class ConsoleGenerator {
 
       await commands.executeCommand('editor.action.insertLineAfter');
 
-      const positions: any[] = [];
+      const positions: Position[] = [];
 
       editor.selections.forEach((item) => {
         positions.push(new Position(item.start.line, item.end.character));
@@ -62,12 +62,13 @@ export default class ConsoleGenerator {
         positions.forEach((position, index) => {
           const texts = insertLineAndText[index].texts;
           const length = texts.length;
+          const tab = this.getTab(position.character);
 
           let txt = '';
 
           texts.forEach((item, subIndex) => {
             if (subIndex !== (length - 1)) {
-              txt += `console.log('${item} :>> ', ${item});\n`;
+              txt += `console.log('${item} :>> ', ${item});\n${tab}`;
               return;
             }
 
@@ -81,6 +82,19 @@ export default class ConsoleGenerator {
     } catch (error) {
       
     }
+  }
+
+  // TODO: 目前只是处理了空格制表符的情况，对于其它制表符，还没处理
+  private getTab(size: number): string {
+    let result = '';
+    let index = 0;
+
+    while (index < size) {
+      result += ' ';
+      index++;
+    }
+
+    return result;
   }
 
   private getInsertLineAndText(editor: TextEditor): InsertLineAndText[] {
