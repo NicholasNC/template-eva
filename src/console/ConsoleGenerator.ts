@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-01-29 10:17:18
- * @LastEditTime: 2022-01-31 10:27:16
+ * @LastEditTime: 2022-01-31 10:33:33
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -18,6 +18,12 @@ import {
 } from 'vscode';
 import lodash from 'lodash';
 
+// 存储需要插入 console 的行和对应的变量字符串
+interface InsertLineAndText {
+  line: number;
+  texts: string[];
+}
+
 export default class ConsoleGenerator {
   async execute(uri: Uri) {
     const editor = window.activeTextEditor;
@@ -30,8 +36,8 @@ export default class ConsoleGenerator {
     try {
       await commands.executeCommand('editor.action.addSelectionToNextFindMatch');
 
-      const endOfBlock = this.getEndLineAndText(editor);
-      const newSelections = endOfBlock.map((item) => {
+      const insertLineAndText: InsertLineAndText[] = this.getInsertLineAndText(editor);
+      const newSelections = insertLineAndText.map((item) => {
         const {
           line,
         } = item;
@@ -50,7 +56,7 @@ export default class ConsoleGenerator {
 
       editor.edit((editBuilder) => {
         positions.forEach((position, index) => {
-          const texts = endOfBlock[index].texts;
+          const texts = insertLineAndText[index].texts;
           const length = texts.length;
 
           let txt = '';
@@ -73,20 +79,15 @@ export default class ConsoleGenerator {
     }
   }
 
-  // {
-  //   line: 1,
-  //   texts: []
-  // }
-
-  private getEndLineAndText(editor: TextEditor): any[] {
-    const result: any[] = [];
+  private getInsertLineAndText(editor: TextEditor): InsertLineAndText[] {
+    const result: InsertLineAndText[] = [];
 
     const selections = editor.selections;
     const ascSelections = lodash.orderBy(selections, 'start.line');
     const length = ascSelections.length;
 
     let tempLine: null | number = null;
-    let tempText: any[] = [];
+    let tempText: string[] = [];
 
     ascSelections.forEach((item, index) => {
       const line = item.start.line;
