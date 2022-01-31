@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-01-29 10:17:18
- * @LastEditTime: 2022-01-31 10:33:33
+ * @LastEditTime: 2022-01-31 10:35:42
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -33,6 +33,10 @@ export default class ConsoleGenerator {
         return;
     }
 
+    this.insertConsole(editor);
+  }
+
+  private async insertConsole(editor: TextEditor) {
     try {
       await commands.executeCommand('editor.action.addSelectionToNextFindMatch');
 
