@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-01-29 10:17:18
- * @LastEditTime: 2022-01-31 11:05:48
+ * @LastEditTime: 2022-02-07 12:07:27
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -9,6 +9,7 @@ import {
   workspace,
   window,
   commands,
+  languages,
   
   Uri,
   TextEditor,
@@ -17,6 +18,8 @@ import {
   Position,
 } from 'vscode';
 import lodash from 'lodash';
+
+import * as vscode from 'vscode';
 
 // 存储需要插入 console 的行和对应的变量字符串
 interface InsertLineAndText {
@@ -33,6 +36,26 @@ export default class ConsoleGenerator {
         return;
     }
 
+    // const tokenTypes = ['class', 'interface', 'enum', 'function', 'variable'];
+    // const tokenModifiers = ['declaration', 'documentation'];
+    // const legend = new vscode.SemanticTokensLegend(tokenTypes, tokenModifiers);
+
+    // const provider: vscode.DocumentSemanticTokensProvider = {
+    //   provideDocumentSemanticTokens(
+    //     document: vscode.TextDocument
+    //   ): vscode.ProviderResult<vscode.SemanticTokens> {
+    //     const tokensBuilder = new vscode.SemanticTokensBuilder(legend);
+    //     tokensBuilder.push(      
+    //       new vscode.Range(new vscode.Position(0, 3), new vscode.Position(0, 8)),
+    //       tokenTypes[0],
+    //       [tokenModifiers[0]]
+    //     );
+    //     return tokensBuilder.build();
+    //   }
+    // };
+
+ 
+
     this.insertConsole(editor);
   }
 
@@ -47,6 +70,8 @@ export default class ConsoleGenerator {
         } = item;
         return new Selection(line, 0, line, 0);
       });
+
+      console.log('insertLineAndText', insertLineAndText);
 
       editor.selections = newSelections;
 
@@ -107,6 +132,8 @@ export default class ConsoleGenerator {
     let tempLine: null | number = null;
     let tempText: string[] = [];
 
+    console.log('ascSelections', ascSelections);
+
     ascSelections.forEach((item, index) => {
       const line = item.start.line;
       const text = editor.document.getText(item);
@@ -116,6 +143,8 @@ export default class ConsoleGenerator {
         tempLine = line;
         return;
       }
+
+      // TODO: 像函数参数这种，在同一样的情况还没兼容到
 
       if (line !== (tempLine + 1)) {
         result.push({
