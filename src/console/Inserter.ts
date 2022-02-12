@@ -1,9 +1,9 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-02-12 14:50:54
- * @LastEditTime: 2022-02-12 15:02:57
+ * @LastEditTime: 2022-02-12 15:05:02
  * @LastEditors: wuqinfa
- * @Description: 
+ * @Description: 根据用户选择的变量，插入 console.log
  */
 import {
   commands,
