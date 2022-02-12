@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-02-12 14:50:54
- * @LastEditTime: 2022-02-12 14:57:53
+ * @LastEditTime: 2022-02-12 15:02:57
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -20,7 +20,7 @@ interface InsertLineAndText {
   texts: string[];
 }
 
-export default class ConsoleInserter {
+export default class Inserter {
   private editor: TextEditor;
 
   constructor(editor: TextEditor) {

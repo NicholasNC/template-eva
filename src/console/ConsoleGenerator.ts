@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-01-29 10:17:18
- * @LastEditTime: 2022-02-12 15:00:09
+ * @LastEditTime: 2022-02-12 15:03:11
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -20,7 +20,7 @@ import {
 import lodash from 'lodash';
 import * as recast from 'recast';
 
-import ConsoleInserter from './ConsoleInserter';
+import Inserter from './Inserter';
 
 export default class ConsoleGenerator {
   async execute(type: 'insertConsole' | 'addConsoleComment' | 'delConsoleComment') {
@@ -33,7 +33,7 @@ export default class ConsoleGenerator {
 
     switch (type) {
       case 'insertConsole':
-        const consoleInserter = new ConsoleInserter(editor);
+        const consoleInserter = new Inserter(editor);
         consoleInserter.insert();
         break;
       case 'addConsoleComment':
