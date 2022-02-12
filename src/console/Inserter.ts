@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-02-12 14:50:54
- * @LastEditTime: 2022-02-12 15:05:02
+ * @LastEditTime: 2022-02-12 18:10:19
  * @LastEditors: wuqinfa
  * @Description: 根据用户选择的变量，插入 console.log
  */
@@ -31,7 +31,7 @@ export default class Inserter {
     try {
       await commands.executeCommand('editor.action.addSelectionToNextFindMatch');
 
-      const insertLineAndText: InsertLineAndText[] = this.getInsertLineAndText(this.editor);
+      const insertLineAndText: InsertLineAndText[] = this.getInsertLineAndText();
       const newSelections = insertLineAndText.map((item) => {
         const {
           line,
@@ -89,17 +89,15 @@ export default class Inserter {
 
     console.log('ascSelections', ascSelections);
 
-    ascSelections.forEach((item, index) => {
+    ascSelections.forEach((item) => {
       const line = item.start.line;
       const text = this.editor.document.getText(item);
 
-      if (tempLine === null) {
-        tempText.push(text);
+      if ((tempLine === null) || (line === tempLine) || (line === tempLine + 1)) {
         tempLine = line;
+        tempText.push(text);
         return;
       }
-
-      // TODO: 像函数参数这种，在同一样的情况还没兼容到
 
       if (line !== (tempLine + 1)) {
         result.push({
@@ -107,19 +105,17 @@ export default class Inserter {
           texts: tempText,
         });
 
-        tempText = [];
-      }
-
-      tempText.push(text);
-      tempLine = line;
-
-      if (index === (length - 1)) {
-        result.push({
-          line: line,
-          texts: tempText,
-        });
+        tempLine = line;
+        tempText = [text];
       }
     });
+
+    if (tempLine !== null) {
+      result.push({
+        line: tempLine,
+        texts: tempText,
+      });
+    }
 
     return result;
   }
