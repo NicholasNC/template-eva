@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-26 14:11:31
- * @LastEditTime: 2022-02-12 12:16:26
+ * @LastEditTime: 2022-02-12 14:35:08
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -51,8 +51,8 @@ export function activate(context: vscode.ExtensionContext) {
   );
   
   context.subscriptions.push(
-    vscode.commands.registerCommand('template-eva.insertLogStatement', () => {
-      myConsole.execute('insertLogStatement');
+    vscode.commands.registerCommand('template-eva.insertConsole', () => {
+      myConsole.execute('insertConsole');
     })
   );
 
