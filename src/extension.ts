@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-26 14:11:31
- * @LastEditTime: 2022-01-30 12:01:24
+ * @LastEditTime: 2022-02-12 14:35:08
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
   const image = new ImgGenerator('image');
   const lorem = new LoremGenerator();
   const file = new FileGenerator();
-  const console = new ConsoleGenerator();
+  const myConsole = new ConsoleGenerator();
 
   context.subscriptions.push(
     vscode.commands.registerCommand('template-eva.insertAvatar', () => {
@@ -51,8 +51,20 @@ export function activate(context: vscode.ExtensionContext) {
   );
   
   context.subscriptions.push(
-    vscode.commands.registerCommand('template-eva.insertLogStatement', (uri: vscode.Uri) => {
-      console.execute(uri);
+    vscode.commands.registerCommand('template-eva.insertConsole', () => {
+      myConsole.execute('insertConsole');
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('template-eva.addConsoleComment', () => {
+      myConsole.execute('addConsoleComment');
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('template-eva.delConsoleComment', () => {
+      myConsole.execute('delConsoleComment');
     })
   );
 }

@@ -35,8 +35,16 @@
         "title": "通过模板生成文件"
       },
       {
-        "command": "template-eva.insertLogStatement",
+        "command": "template-eva.insertConsole",
         "title": "插入 log"
+      },
+      {
+        "command": "template-eva.addConsoleComment",
+        "title": "注释 log"
+      },
+      {
+        "command": "template-eva.delConsoleComment",
+        "title": "取消 log 注释"
       }
     ],
     "menus": {
@@ -64,9 +72,21 @@
     },
     "keybindings": [
       {
-        "command": "template-eva.insertLogStatement",
+        "command": "template-eva.insertConsole",
         "key": "shift+ctrl+l",
         "mac": "shift+cmd+l",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "template-eva.addConsoleComment",
+        "key": "shift+ctrl+/",
+        "mac": "shift+ctrl+/",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "template-eva.delConsoleComment",
+        "key": "shift+ctrl+alt+/",
+        "mac": "shift+ctrl+alt+/",
         "when": "editorTextFocus"
       }
     ],
@@ -142,6 +162,7 @@
   "dependencies": {
     "fs-extra": "^10.0.0",
     "lodash": "^4.17.21",
+    "recast": "^0.20.5",
     "vscode-nls": "^5.0.0"
   }
 }
