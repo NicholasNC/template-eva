@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-01-29 10:17:18
- * @LastEditTime: 2022-02-07 12:07:27
+ * @LastEditTime: 2022-02-12 11:43:23
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -18,6 +18,7 @@ import {
   Position,
 } from 'vscode';
 import lodash from 'lodash';
+import * as recast from 'recast';
 
 import * as vscode from 'vscode';
 
@@ -36,27 +37,118 @@ export default class ConsoleGenerator {
         return;
     }
 
-    // const tokenTypes = ['class', 'interface', 'enum', 'function', 'variable'];
-    // const tokenModifiers = ['declaration', 'documentation'];
-    // const legend = new vscode.SemanticTokensLegend(tokenTypes, tokenModifiers);
 
-    // const provider: vscode.DocumentSemanticTokensProvider = {
-    //   provideDocumentSemanticTokens(
-    //     document: vscode.TextDocument
-    //   ): vscode.ProviderResult<vscode.SemanticTokens> {
-    //     const tokensBuilder = new vscode.SemanticTokensBuilder(legend);
-    //     tokensBuilder.push(      
-    //       new vscode.Range(new vscode.Position(0, 3), new vscode.Position(0, 8)),
-    //       tokenTypes[0],
-    //       [tokenModifiers[0]]
-    //     );
-    //     return tokensBuilder.build();
-    //   }
-    // };
+    // editor.selections = [
+    //   new Selection(1, 0, 1, 0),
+    //   new Selection(2, 0, 2, 0),
+    // ];
 
- 
+    // commands.executeCommand('editor.action.commentLine'); 
 
-    this.insertConsole(editor);
+    // this.addConsoleComment(editor);
+    this.delConsoleComment(editor);
+    // this.insertConsole(editor);
+  }
+
+  private getConsoleSelections(editor: TextEditor): Selection[] {
+    const ast = recast.parse(editor.document.getText());
+    const result: Selection[] = [];
+
+    try {
+      recast.visit(ast, {
+        visitExpressionStatement: ({ node }) => {
+          const callee = node.expression.callee;
+  
+          if (!callee) {
+            return false;
+          }
+          if ((callee?.object?.name !== 'console') && (callee?.name !== 'log')) {
+            return false;
+          }
+  
+          const loc = node.expression.loc;
+          const start = new Position(loc.start.line - 1, loc.start.column);
+          const end = new Position(loc.end.line - 1, loc.end.column);
+          const selection = new Selection(start, end);
+  
+          result.push(selection);
+  
+          return false;
+        },
+      });
+    } catch (error) {
+      return result;
+    }
+
+    return result;
+  }
+
+  private getConsoleCommentSelections(editor: TextEditor): Selection[] {
+    const ast = recast.parse(editor.document.getText());
+    const logRegex = /console.(log|debug|info|warn|error|exception|assert|dirxml|dir|table|trace|groupCollapsed|groupEnd|group|timeEnd|time|profileEnd|profile|count)/g;
+    const result: Selection[] = [];
+
+    try {
+      recast.visit(ast, {
+        visitComment: ({ node }) => {
+          const comments = node.comments || [];
+
+          comments.forEach((item: any) => {
+            const {
+              loc,
+              type,
+              value,
+            } = item;
+
+            if (type === 'Block' && logRegex.test(value)) {
+              const start = new Position(loc.start.line - 1, loc.start.column);
+              const end = new Position(loc.end.line - 1, loc.end.column);
+              const selection = new Selection(start, end);
+
+              result.push(selection);
+            }
+          });
+  
+          return false;
+        },
+      });
+    } catch (error) {
+      return result;
+    }
+
+    return result;
+  }
+
+  private addConsoleComment(editor: TextEditor) {
+    const newSelections = this.getConsoleSelections(editor);
+
+    if (!newSelections?.length) {
+      return;
+    }
+
+    try {
+      editor.selections = newSelections;
+
+      commands.executeCommand('editor.action.blockComment');
+    } catch (error) {
+      
+    }
+  }
+
+  private delConsoleComment(editor: TextEditor) {
+    const newSelections = this.getConsoleCommentSelections(editor);
+
+    if (!newSelections?.length) {
+      return;
+    }
+
+    try {
+      editor.selections = newSelections;
+
+      commands.executeCommand('editor.action.blockComment');
+    } catch (error) {
+      
+    }
   }
 
   private async insertConsole(editor: TextEditor) {
