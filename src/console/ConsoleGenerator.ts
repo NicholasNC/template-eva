@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-01-29 10:17:18
- * @LastEditTime: 2022-02-12 11:43:23
+ * @LastEditTime: 2022-02-12 12:16:37
  * @LastEditors: wuqinfa
  * @Description: 
  */
@@ -29,7 +29,7 @@ interface InsertLineAndText {
 }
 
 export default class ConsoleGenerator {
-  async execute(uri: Uri) {
+  async execute(type: 'insertLogStatement' | 'addConsoleComment' | 'delConsoleComment') {
     const editor = window.activeTextEditor;
 
     if (!editor) {
@@ -37,17 +37,22 @@ export default class ConsoleGenerator {
         return;
     }
 
+    console.log('type', type);
 
-    // editor.selections = [
-    //   new Selection(1, 0, 1, 0),
-    //   new Selection(2, 0, 2, 0),
-    // ];
-
-    // commands.executeCommand('editor.action.commentLine'); 
-
-    // this.addConsoleComment(editor);
-    this.delConsoleComment(editor);
-    // this.insertConsole(editor);
+    switch (type) {
+      case 'insertLogStatement':
+        this.insertConsole(editor);
+        break;
+      case 'addConsoleComment':
+        this.addConsoleComment(editor);
+        break;
+      case 'delConsoleComment':
+        this.delConsoleComment(editor);
+        break;
+    
+      default:
+        break;
+    }
   }
 
   private getConsoleSelections(editor: TextEditor): Selection[] {

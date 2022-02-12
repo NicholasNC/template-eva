@@ -37,6 +37,14 @@
       {
         "command": "template-eva.insertLogStatement",
         "title": "插入 log"
+      },
+      {
+        "command": "template-eva.addConsoleComment",
+        "title": "注释 log"
+      },
+      {
+        "command": "template-eva.delConsoleComment",
+        "title": "取消 log 注释"
       }
     ],
     "menus": {
@@ -67,6 +75,18 @@
         "command": "template-eva.insertLogStatement",
         "key": "shift+ctrl+l",
         "mac": "shift+cmd+l",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "template-eva.addConsoleComment",
+        "key": "shift+ctrl+/",
+        "mac": "shift+ctrl+/",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "template-eva.delConsoleComment",
+        "key": "shift+ctrl+alt+/",
+        "mac": "shift+ctrl+alt+/",
         "when": "editorTextFocus"
       }
     ],
