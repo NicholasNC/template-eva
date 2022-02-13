@@ -125,16 +125,7 @@
         "template-eva.fileTemplates": {
           "type": "array",
           "description": "模板文件",
-          "default": [
-            {
-              "fileName": "wxappPage",
-              "description": "微信模板页面"
-            },
-            {
-              "fileName": "ttTS.ts",
-              "description": "测试一个文件"
-            }
-          ]
+          "default": []
         }
       }
     }
