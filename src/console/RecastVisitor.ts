@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-02-12 15:07:07
- * @LastEditTime: 2022-02-12 15:55:10
+ * @LastEditTime: 2022-02-13 14:44:19
  * @LastEditors: wuqinfa
  * @Description: 使用 recast 遍历 AST 节点
  */
@@ -12,7 +12,7 @@ import {
 import lodash from 'lodash';
 import { visit } from 'recast';
 
-const LOG_REGEX = /console.(log|debug|info|warn|error|exception|assert|dirxml|dir|table|trace|groupCollapsed|groupEnd|group|timeEnd|time|profileEnd|profile|count)/g;
+const LOG_REGEX = /console.(log|debug|info|warn|error|exception|assert|dirxml|dir|table|trace|groupCollapsed|groupEnd|group|timeEnd|time|profileEnd|profile|count)/;
 
 export default class RecastVisitor {
   private ast: any;
@@ -70,12 +70,13 @@ export default class RecastVisitor {
 
   getConsoleCommentSelections(): Selection[] {
     const result: Selection[] = [];
+    const temp: any[] = [];
 
     try {
       visit(this.ast, {
         visitComment: ({ node }) => {
           const comments = node.comments || [];
-
+          
           comments.forEach((item: any) => {
             const {
               loc,
@@ -84,11 +85,14 @@ export default class RecastVisitor {
             } = item;
 
             if (type === 'Block' && LOG_REGEX.test(value)) {
-              const start = new Position(loc.start.line - 1, loc.start.column);
-              const end = new Position(loc.end.line - 1, loc.end.column);
-              const selection = new Selection(start, end);
+              const startLine = loc.start.line - 1;
+              const startColumn = loc.start.column;
+              const endLine = loc.end.line - 1;
+              const endColumn = loc.end.column;
 
-              result.push(selection);
+              if (!lodash.find(temp, { startLine, startColumn, endLine,  endColumn, })) {
+                temp.push({ startLine, startColumn, endLine,  endColumn, });
+              }
             }
           });
   
@@ -98,6 +102,21 @@ export default class RecastVisitor {
     } catch (error) {
       return result;
     }
+
+    temp.forEach((item: any) => {
+      const {
+        startLine,
+        startColumn,
+        endLine,
+        endColumn,
+      } = item;
+
+      const start = new Position(startLine, startColumn);
+      const end = new Position(endLine, endColumn);
+      const selection = new Selection(start, end);
+
+      result.push(selection);
+    });
 
     return result;
   }
