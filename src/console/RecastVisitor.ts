@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-02-12 15:07:07
- * @LastEditTime: 2022-02-13 14:44:19
+ * @LastEditTime: 2022-02-13 14:47:30
  * @LastEditors: wuqinfa
  * @Description: 使用 recast 遍历 AST 节点
  */
@@ -12,6 +12,7 @@ import {
 import lodash from 'lodash';
 import { visit } from 'recast';
 
+// 如果正则表达式设置了全局标志，test() 的执行会改变正则表达式   lastIndex属性。连续的执行test()方法，后续的执行将会从 lastIndex 处开始匹配字符串，(exec() 同样改变正则本身的 lastIndex属性值).
 const LOG_REGEX = /console.(log|debug|info|warn|error|exception|assert|dirxml|dir|table|trace|groupCollapsed|groupEnd|group|timeEnd|time|profileEnd|profile|count)/;
 
 export default class RecastVisitor {
