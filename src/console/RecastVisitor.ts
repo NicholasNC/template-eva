@@ -1,7 +1,7 @@
 /*
  * @Author: wuqinfa
  * @Date: 2022-02-12 15:07:07
- * @LastEditTime: 2022-02-13 14:47:30
+ * @LastEditTime: 2022-02-13 15:34:52
  * @LastEditors: wuqinfa
  * @Description: 使用 recast 遍历 AST 节点
  */
@@ -27,7 +27,7 @@ export default class RecastVisitor {
 
     try {
       visit(this.ast, {
-        visitExpressionStatement: ({ node }) => {
+        visitExpressionStatement: ({ node }: any) => {
           const callee = node.expression.callee;
   
           if (!callee || (callee?.object?.name !== 'console')) {
@@ -75,7 +75,7 @@ export default class RecastVisitor {
 
     try {
       visit(this.ast, {
-        visitComment: ({ node }) => {
+        visitComment: ({ node }: any) => {
           const comments = node.comments || [];
           
           comments.forEach((item: any) => {
