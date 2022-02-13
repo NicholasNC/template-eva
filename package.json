@@ -2,7 +2,7 @@
   "name": "template-eva",
   "displayName": "template-eva",
   "description": "template eva",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.63.0"
