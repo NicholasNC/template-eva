@@ -42,6 +42,18 @@
       {
         "command": "template-eva.createFile",
         "title": "通过模板生成文件"
+      },
+      {
+        "command": "template-eva.insertConsole",
+        "title": "插入 log"
+      },
+      {
+        "command": "template-eva.addConsoleComment",
+        "title": "注释 log"
+      },
+      {
+        "command": "template-eva.delConsoleComment",
+        "title": "取消 log 注释"
       }
     ],
     "menus": {
@@ -67,6 +79,26 @@
         }
       ]
     },
+    "keybindings": [
+      {
+        "command": "template-eva.insertConsole",
+        "key": "shift+ctrl+l",
+        "mac": "shift+cmd+l",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "template-eva.addConsoleComment",
+        "key": "shift+ctrl+/",
+        "mac": "shift+ctrl+/",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "template-eva.delConsoleComment",
+        "key": "shift+ctrl+alt+/",
+        "mac": "shift+ctrl+alt+/",
+        "when": "editorTextFocus"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "%ext.config.title%",
@@ -121,6 +153,7 @@
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/glob": "^7.1.4",
+    "@types/lodash": "^4.14.178",
     "@types/mocha": "^9.0.0",
     "@types/node": "14.x",
     "@types/vscode": "^1.63.0",
@@ -137,6 +170,8 @@
   },
   "dependencies": {
     "fs-extra": "^10.0.0",
+    "lodash": "^4.17.21",
+    "recast": "^0.20.5",
     "vscode-nls": "^5.0.0"
   }
 }

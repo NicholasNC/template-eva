@@ -1,16 +1,18 @@
 /*
  * @Author: your name
  * @Date: 2021-12-26 14:11:31
- * @LastEditTime: 2022-01-26 15:42:36
+ * @LastEditTime: 2022-02-12 14:35:08
  * @LastEditors: wuqinfa
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: /template-eva/src/extension.ts
+ * @Description: 
  */
 import * as vscode from 'vscode';
 
 import ImgGenerator from './insert/ImgGenerator';
 import LoremGenerator from './insert/LoremGenerator';
+
 import FileGenerator from './create/FileGenerator';
+
+import ConsoleGenerator from './console/ConsoleGenerator';
 
 
 /**
@@ -22,6 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
   const image = new ImgGenerator('image');
   const lorem = new LoremGenerator();
   const file = new FileGenerator();
+  const myConsole = new ConsoleGenerator();
 
   context.subscriptions.push(
     vscode.commands.registerCommand('template-eva.insertAvatar', () => {
@@ -44,6 +47,24 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('template-eva.createFile', (uri: vscode.Uri) => {
       file.execute(uri);
+    })
+  );
+  
+  context.subscriptions.push(
+    vscode.commands.registerCommand('template-eva.insertConsole', () => {
+      myConsole.execute('insertConsole');
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('template-eva.addConsoleComment', () => {
+      myConsole.execute('addConsoleComment');
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('template-eva.delConsoleComment', () => {
+      myConsole.execute('delConsoleComment');
     })
   );
 }
